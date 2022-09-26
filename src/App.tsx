@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import './App.css';
+import styles from './App.module.css';
 import {useAppDispatch, useAppSelector} from './redux/store';
 import {
     createConnection,
@@ -8,7 +8,6 @@ import {
     setClientName,
     typeMessage
 } from './redux/chat-reducer';
-
 
 function App() {
     const messages = useAppSelector(state => state.chat.messages)
@@ -36,10 +35,10 @@ function App() {
     const messagesAnchorRef = useRef<HTMLDivElement>(null)
 
     return (
-        <div className="App">
+        <div className={styles.App}>
             <div>
                 <div
-                    className={'mainBlock'}
+                    className={styles.mainBlock}
                     onScroll={(e) => {
                         let element = e.currentTarget
                         let maxScrollPosition = element.scrollHeight - element.clientHeight
@@ -52,13 +51,13 @@ function App() {
                         setLastScrollTop(element.scrollTop)
                     }}
                 >
-                    {messages.map((m: any) => {
+                    {messages.map(m => {
                         return <div key={m.id}>
                             <b>{m.user.name}: </b> {m.message}
                             <hr/>
                         </div>
                     })}
-                    {typingUsers.map((tu: any) => {
+                    {typingUsers.map(tu => {
                         return <div key={tu.id}>
                             <b>{tu.name}: </b> ...
                         </div>
@@ -66,22 +65,24 @@ function App() {
                     <div ref={messagesAnchorRef}>
                     </div>
                 </div>
-                <div>
-                    <input className={'input'} value={name}
+                <div className={styles.nameBlock}>
+                    <input className={styles.enterName} value={name}
                            onChange={(e) => setName(e.currentTarget.value)}/>
-                    <button onClick={() => {
+                    <button
+                        className={styles.sendButton}
+                        onClick={() => {
                         dispatch(setClientName(name))
                     }}>send name
                     </button>
                 </div>
-                <div className={'newMessage'}>
+                <div className={styles.newMessageBlock}>
                 <textarea
-                    className={'textArea'}
+                    className={styles.enterMessage}
                     value={message}
                     onChange={(e) => setMessage(e.currentTarget.value)}>
             </textarea>
                     <button
-                        className={'sendButton'}
+                        className={styles.sendButton}
                         onKeyUp={() => {
                             dispatch(typeMessage())
                         }}

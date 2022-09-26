@@ -1,0 +1,119 @@
+.App {
+    margin-top: 150px;
+    display: flex;
+    justify-content: center;
+}
+
+.mainBlock {
+    background-color: rgba(255, 255, 255, 0.7);
+    border: 1px solid black;
+    padding: 10px;
+    height: 300px;
+    width: 300px;
+    overflow-y: scroll;
+}
+
+.nameBlock {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 15px 0;
+}
+
+.enterName {
+    background-color: rgba(0, 0, 0, 0.1);
+    height: 22px;
+    margin: 0 5px 0 0;
+    width: 200px;
+    padding: 5px;
+}
+
+.enterName:focus {
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+@keyframes blink {
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+.sendButton {
+    position: relative;
+    overflow: hidden;
+    width: 100px;
+    height: 36px;
+    background-color: #385d8c;
+    color: #a2e0fd;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.sendButton::after {
+    display: block;
+    content: '';
+    position: absolute;
+
+    left: -100%;
+    top: 0;
+    height: 100%;
+    width: 20%;
+
+    transform: skew(45deg);
+
+    background-color: #ffffff;
+    opacity: 0.7;
+
+    z-index: 2;
+}
+
+.sendButton:hover::after {
+    animation: blink 0.35s ease;
+    transform: skew(45deg);
+    color: #99ffff;
+    font-weight: bold;
+}
+
+.sendButton:hover::before {
+    display: block;
+    content: '';
+    position: absolute;
+
+    left: -100vw;
+    top: 0;
+    height: 100vh;
+    width: 300vw;
+
+    background-color: #ffffff;
+    opacity: 0.2;
+
+    z-index: 1;
+}
+
+.sendButton:focus {
+    outline: #a2e0fd solid 1px;
+    border-color: #385d8c;
+}
+
+.sendButton:active {
+    background-color: #a2e0fd;
+    color: #385d8c;
+}
+
+.newMessageBlock {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.enterMessage {
+    background-color: rgba(0, 0, 0, 0.1);
+    width: 210px;
+}
+
+.enterMessage:focus {
+    background-color: rgba(255, 255, 255, 0.7);
+}
