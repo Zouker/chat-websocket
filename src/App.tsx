@@ -1,13 +1,19 @@
 import React, {useEffect, useRef, useState} from 'react';
 import './App.css';
-import io from 'socket.io-client'
+import {useAppDispatch, useAppSelector} from './redux/store';
+import {
+    createConnection,
+    destroyConnection,
+    sendMessage,
+    setClientName,
+    typeMessage
+} from './redux/chat-reducer';
 
-// const socket = io('http://localhost:3009');
-const socket = io('https://chat-websocket-back.herokuapp.com');
 
 function App() {
-
-    const [messages, setMessages] = useState<Array<any>>([])
+    const messages = useAppSelector(state => state.chat.messages)
+    const typingUsers = useAppSelector(state => state.chat.typingUsers)
+    const dispatch = useAppDispatch()
 
     const [message, setMessage] = useState('hello')
     const [name, setName] = useState('Denis')
@@ -15,13 +21,10 @@ function App() {
     const [lastScrollTop, setLastScrollTop] = useState(0)
 
     useEffect(() => {
-        socket.on('init-messages-published', (messages) => {
-            setMessages(messages)
-        })
-
-        socket.on('new-message-sent', (message) => {
-            setMessages((messages) => [...messages, message])
-        })
+        dispatch(createConnection())
+        return () => {
+            dispatch(destroyConnection())
+        }
     }, [])
 
     useEffect(() => {
@@ -49,10 +52,15 @@ function App() {
                         setLastScrollTop(element.scrollTop)
                     }}
                 >
-                    {messages.map(m => {
+                    {messages.map((m: any) => {
                         return <div key={m.id}>
                             <b>{m.user.name}: </b> {m.message}
                             <hr/>
+                        </div>
+                    })}
+                    {typingUsers.map((tu: any) => {
+                        return <div key={tu.id}>
+                            <b>{tu.name}: </b> ...
                         </div>
                     })}
                     <div ref={messagesAnchorRef}>
@@ -62,7 +70,7 @@ function App() {
                     <input className={'input'} value={name}
                            onChange={(e) => setName(e.currentTarget.value)}/>
                     <button onClick={() => {
-                        socket.emit('client-name-sent', name)
+                        dispatch(setClientName(name))
                     }}>send name
                     </button>
                 </div>
@@ -74,8 +82,11 @@ function App() {
             </textarea>
                     <button
                         className={'sendButton'}
+                        onKeyUp={() => {
+                            dispatch(typeMessage())
+                        }}
                         onClick={() => {
-                            socket.emit('client-message-sent', message)
+                            dispatch(sendMessage(message))
                             setMessage('')
                         }}>Send
                     </button>
