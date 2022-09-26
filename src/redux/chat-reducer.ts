@@ -1,5 +1,5 @@
 import {AppThunk} from './store';
-import {api} from '../api/api';
+import {api, MessageType, UserType} from '../api/api';
 
 const initialState = {
     messages: [] as MessageType[],
@@ -80,14 +80,3 @@ type ActionType =
     ReturnType<typeof messagesReceived>
     | ReturnType<typeof newMessageReceived>
     | ReturnType<typeof typingUserAdded>
-
-type MessageType = {
-    message: string
-    id: string
-    user: UserType
-}
-
-type UserType = {
-    id: string
-    name: string
-}

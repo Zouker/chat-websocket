@@ -6,9 +6,9 @@ export const api = {
     createConnection() {
         this.socket = io('https://chat-websocket-back.herokuapp.com');
     },
-    subscribe(initMessagesHandler: (messages: any, fn: () => void) => void,
-              newMessageSentHandler: (message: any) => void,
-              userTypingHandler: (user: any) => void
+    subscribe(initMessagesHandler: (messages: MessageType[], fn: () => void) => void,
+              newMessageSentHandler: (message: MessageType) => void,
+              userTypingHandler: (user: UserType) => void
     ) {
         this.socket?.on('init-messages-published', initMessagesHandler)
         this.socket?.on('new-message-sent', newMessageSentHandler)
@@ -29,4 +29,16 @@ export const api = {
     typeMessage() {
         this.socket?.emit('client-typed')
     }
+}
+
+// types
+export type MessageType = {
+    message: string
+    id: string
+    user: UserType
+}
+
+export type UserType = {
+    id: string
+    name: string
 }
