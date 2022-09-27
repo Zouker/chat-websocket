@@ -4,7 +4,13 @@ export const api = {
     socket: null as null | Socket,
 
     createConnection() {
-        this.socket = io('https://chat-websocket-back.herokuapp.com');
+        this.socket = io('https://chat-websocket-back.herokuapp.com', {
+            withCredentials: true,
+            rememberUpgrade: true,
+            transports: ['websocket'],
+            secure: true,
+            rejectUnauthorized: false
+        });
     },
     subscribe(initMessagesHandler: (messages: MessageType[], fn: () => void) => void,
               newMessageSentHandler: (message: MessageType) => void,
